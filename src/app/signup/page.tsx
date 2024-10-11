@@ -7,6 +7,7 @@ import { useAuth } from "../../../contexts/AuthContext";
 export default function Login() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
 	const { signUp } = useAuth();
 	const router = useRouter();
 
@@ -16,6 +17,7 @@ export default function Login() {
 			await signUp(email, password);
 			router.push("/login");
 		} catch (error) {
+            setError(error.message);
 			console.error("Error signing up:", error);
 		}
 	}
@@ -53,6 +55,7 @@ export default function Login() {
 				>
 					Sign Up
 				</button>
+                {error && <div className="text-red-500">{error}</div>}
 				<div>
                     Have an account? <a href="/login">Log in</a>
 				</div>

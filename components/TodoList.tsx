@@ -74,7 +74,7 @@ export default function TodoList() {
 
 	return (
 		<div className="max-w-md mx-auto mt-10">
-			<form onSubmit={addTodo} className="mb-4">
+			<form onSubmit={addTodo} className="flex flex-row space-x-2 mb-4 gap-2">
 				<input
 					type="text"
 					value={newTask}
@@ -107,9 +107,8 @@ export default function TodoList() {
 							</span>
 						</div>
 						{/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-<button
+						<button
 							onClick={() => deleteTodo(todo.id)}
-							className="px-2 py-1 bg-red-500 text-white rounded"
 						>
 							Delete
 						</button>

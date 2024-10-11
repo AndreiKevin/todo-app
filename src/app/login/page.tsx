@@ -1,8 +1,11 @@
-'use client'
+"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../../contexts/AuthContext";
+import Counter from "../../../components/Counter";
+import SimpleCalculator from "../../../components/Calculator";
+import GrowButton from "../../../components/GrowingButton";
 
 export default function Login() {
 	const [email, setEmail] = useState("");
@@ -60,6 +63,12 @@ export default function Login() {
 					No account? <a href="/signup">Sign up</a>
 				</div>
 			</form>
+
+			<div className="mt-4">
+				<Counter />
+				<SimpleCalculator />
+				<GrowButton />
+			</div>
 		</div>
 	);
 }

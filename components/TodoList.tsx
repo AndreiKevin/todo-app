@@ -6,7 +6,7 @@ import { useAuth } from "../contexts/AuthContext";
 export default function TodoList() {
 	const [todos, setTodos] = useState<Todo[]>([]);
 	const [newTask, setNewTask] = useState("");
-    const [error, setError] = useState<string | null>(null);
+	const [error, setError] = useState<string | null>(null);
 	const { user } = useAuth();
 
 	useEffect(() => {
@@ -23,7 +23,7 @@ export default function TodoList() {
 			.order("created_at", { ascending: true });
 
 		if (error) {
-            setError(error.message);
+			setError(error.message);
 			console.error("Error fetching todos:", error);
 		} else {
 			setTodos(data || []);
@@ -74,9 +74,26 @@ export default function TodoList() {
 		}
 	}
 
+	async function updateTodo(id: number, updatedTask: string) {
+		const { error } = await supabase
+			.from("todos")
+			.update({ task: updatedTask })
+			.eq("id", id);
+
+		if (error) {
+			console.error("Error updating todo:", error);
+		} else {
+			setTodos(
+				todos.map((todo) =>
+					todo.id === id ? { ...todo, task: updatedTask } : todo,
+				),
+			);
+		}
+	}
+
 	return (
-		<div className="max-w-md mx-auto mt-10 gap-2">
-			<form onSubmit={addTodo} className="flex flex-row space-x-2 mb-4 gap-2">
+		<div className="max-w-md mx-auto mt-10">
+			<form onSubmit={addTodo} className="flex flex-row space-x-2 mb-4">
 				<input
 					type="text"
 					value={newTask}
@@ -86,19 +103,19 @@ export default function TodoList() {
 				/>
 				<button
 					type="submit"
-					className="mt-2 px-4 py-2 bg-blue-500 text-white rounded"
+					className="min-w-fit px-4 bg-blue-500 text-white rounded"
 				>
 					Add Todo
 				</button>
 			</form>
 			<ul>
-                {error && <div className="text-red-500">{error}</div>}
+				{error && <div className="text-red-500">{error}</div>}
 				{todos.map((todo) => (
 					<li
 						key={todo.id}
-						className="flex items-center justify-between pt-1 border-b"
+						className="flex items-center justify-between pt-1 border-b p-2"
 					>
-						<div className="flex items-center">
+						<div className="flex items-center gap-2">
 							<input
 								type="checkbox"
 								checked={todo.is_completed}
@@ -109,13 +126,27 @@ export default function TodoList() {
 								{todo.task}
 							</div>
 						</div>
-						{/* biome-ignore lint/a11y/useButtonType: <explanation> */}
-						<button
-                        className="px-4 py-2 bg-red-500 text-white rounded"
-							onClick={() => deleteTodo(todo.id)}
-						>
-							Delete
-						</button>
+						<div className="flex flex-row gap-1">
+							{/* biome-ignore lint/a11y/useButtonType: <explanation> */}
+							<button
+								className="px-4 py-2 bg-yellow-500 text-white rounded"
+								onClick={() => {
+									const updatedTask = prompt("Edit task:", todo.task);
+									if (updatedTask !== null) {
+										updateTodo(todo.id, updatedTask);
+									}
+								}}
+							>
+								Edit
+							</button>
+							{/* biome-ignore lint/a11y/useButtonType: <explanation> */}
+							<button
+								className="px-4 py-2 bg-red-500 text-white rounded"
+								onClick={() => deleteTodo(todo.id)}
+							>
+								Delete
+							</button>
+						</div>
 					</li>
 				))}
 			</ul>

@@ -6,6 +6,7 @@ import { useAuth } from "../contexts/AuthContext";
 export default function TodoList() {
 	const [todos, setTodos] = useState<Todo[]>([]);
 	const [newTask, setNewTask] = useState("");
+    const [error, setError] = useState<string | null>(null);
 	const { user } = useAuth();
 
 	useEffect(() => {
@@ -22,6 +23,7 @@ export default function TodoList() {
 			.order("created_at", { ascending: true });
 
 		if (error) {
+            setError(error.message);
 			console.error("Error fetching todos:", error);
 		} else {
 			setTodos(data || []);
@@ -73,7 +75,7 @@ export default function TodoList() {
 	}
 
 	return (
-		<div className="max-w-md mx-auto mt-10">
+		<div className="max-w-md mx-auto mt-10 gap-2">
 			<form onSubmit={addTodo} className="flex flex-row space-x-2 mb-4 gap-2">
 				<input
 					type="text"
@@ -90,24 +92,26 @@ export default function TodoList() {
 				</button>
 			</form>
 			<ul>
+                {error && <div className="text-red-500">{error}</div>}
 				{todos.map((todo) => (
 					<li
 						key={todo.id}
-						className="flex items-center justify-between p-2 border-b"
+						className="flex items-center justify-between pt-1 border-b"
 					>
 						<div className="flex items-center">
 							<input
 								type="checkbox"
 								checked={todo.is_completed}
 								onChange={() => toggleTodo(todo.id, todo.is_completed)}
-								className="mr-2"
+								className="pr-4"
 							/>
-							<span className={todo.is_completed ? "line-through" : ""}>
+							<div className={todo.is_completed ? "line-through" : ""}>
 								{todo.task}
-							</span>
+							</div>
 						</div>
 						{/* biome-ignore lint/a11y/useButtonType: <explanation> */}
 						<button
+                        className="px-4 py-2 bg-red-500 text-white rounded"
 							onClick={() => deleteTodo(todo.id)}
 						>
 							Delete

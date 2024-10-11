@@ -111,25 +111,27 @@ export default function TodoList() {
 			<ul>
 				{error && <div className="text-red-500">{error}</div>}
 				{todos.map((todo) => (
-					<li
-						key={todo.id}
-						className="flex items-center justify-between pt-1 border-b p-2"
-					>
-						<div className="flex items-center gap-2">
+					<li key={todo.id} className="flex flex-row border-b p-2">
+						<div className="flex items-center w-full overflow-auto">
 							<input
 								type="checkbox"
 								checked={todo.is_completed}
 								onChange={() => toggleTodo(todo.id, todo.is_completed)}
-								className="pr-4"
+								className="mr-2"
 							/>
-							<div className={todo.is_completed ? "line-through" : ""}>
+							<div
+								className={
+									todo.is_completed ? "line-through" : "overflow-auto"
+								}
+							>
 								{todo.task}
 							</div>
 						</div>
+
 						<div className="flex flex-row gap-1">
 							{/* biome-ignore lint/a11y/useButtonType: <explanation> */}
 							<button
-								className="px-4 py-2 bg-yellow-500 text-white rounded"
+								className="px-4 ml-2 p-2 bg-yellow-500 text-white rounded"
 								onClick={() => {
 									const updatedTask = prompt("Edit task:", todo.task);
 									if (updatedTask !== null) {
@@ -141,7 +143,7 @@ export default function TodoList() {
 							</button>
 							{/* biome-ignore lint/a11y/useButtonType: <explanation> */}
 							<button
-								className="px-4 py-2 bg-red-500 text-white rounded"
+								className="px-4 p-2 bg-red-500 text-white rounded"
 								onClick={() => deleteTodo(todo.id)}
 							>
 								Delete

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { useAuth } from "../../contexts/AuthContext";
 import TodoList from "../../components/TodoList";
 import CardList from "../../components/CardList";
@@ -11,8 +10,6 @@ export default function Home() {
   const [pokemonData, setPokemonData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-	const router = useRouter();
 
 	useEffect(() => {
     const fetchPokemon = async () => {
@@ -36,12 +33,6 @@ export default function Home() {
 
     fetchPokemon();
   }, []); // Empty dependency array ensures it runs once on component mount
-
-	useEffect(() => {
-		if (!user) {
-			router.push("/login");
-		}
-	}, [user, router]);
 
 	if (!user) return null;
 

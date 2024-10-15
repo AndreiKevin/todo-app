@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 import type { User } from "@supabase/supabase-js";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { supabase } from "../lib/supabaseClient";
 
 interface AuthContextType {
@@ -17,6 +17,7 @@ const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const [user, setUser] = useState<User | null>(null);
 	const router = useRouter();
+	const pathname = usePathname();
 
 	useEffect(() => {
 		const setServerSession = async () => {
@@ -39,7 +40,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
 	useEffect(() => {
 		if (!user) {
-			router.push("/login");
+			if (pathname !== "/login" && pathname !== "/signup") {
+				router.push("/login");
+			}
 		} else {
 			router.push("/");
 		}

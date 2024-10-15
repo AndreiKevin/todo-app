@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import TodoList from "../../components/TodoList";
 import CardList from "../../components/CardList";
+import Counter from "../../components/Counter";
 
 export default function Home() {
 	const { user, signOut } = useAuth();
@@ -56,11 +57,12 @@ export default function Home() {
 					Sign Out
 				</button>
 			</div>
-			<TodoList />
+			{/* <TodoList /> */}
 
 			<div className="container mx-auto p-4">
-				<h1 className="text-4xl font-bold text-center mb-8">Pokémon Cards</h1>
-				<CardList pokemonData={pokemonData} />
+				{/* <h1 className="text-4xl font-bold text-center mb-8 space-3">Pokémon Cards</h1> */}
+        <Counter />
+				{/* <CardList pokemonData={pokemonData} /> */}
 			</div>
 		</div>
 	);

@@ -2,18 +2,18 @@ import type React from "react";
 import { useState } from "react";
 
 const Counter: React.FC = () => {
-	const [count, setCount] = useState<number>(1);
+	const [count, setCount] = useState<number>(0);
 
 	const increment = () => {
-		setCount((prevCount) => prevCount * 2);
+		setCount((prevCount) => prevCount + 1);
 	};
 
 	const decrement = () => {
-		setCount((prevCount) => prevCount / 2);
+		setCount((prevCount) => prevCount - 1);
 	};
 
 	const reset = () => {
-		setCount(1);
+		setCount(0);
 	};
 
 	const isEven = (num: number) => num % 2 === 0;

@@ -65,6 +65,7 @@ export default function Login() {
 			</form>
 
 			<div className="mt-4">
+				<Counter />
 				<SimpleCalculator />
 				<GrowButton />
 			</div>
